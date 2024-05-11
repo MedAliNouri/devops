@@ -16,8 +16,6 @@
     <description>DevOps_Project</description>
     <properties>
         <java.version>11</java.version>
-        <!-- Add sonar.java.binaries property to specify the directory of compiled Java classes -->
-        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
     <dependencies>
         <!-- Your dependencies remain unchanged -->
@@ -42,6 +40,14 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.11.0.3922</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sonar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
