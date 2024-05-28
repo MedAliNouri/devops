@@ -3,7 +3,6 @@
 
      stages {
          stage('Cloning project') {
-
              steps {
                 echo "Getting Project from Git sss";
                  git branch: "mohamed-ali-nouri",
@@ -11,12 +10,7 @@
              }
          }
 
-         // stage("Test") {
 
-         //     steps {
-         //         sh "mvn test"
-         //     }
-         // }
 
          stage("Build") {
              steps {
