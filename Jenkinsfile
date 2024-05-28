@@ -6,7 +6,7 @@
 
              steps {
                 echo "Getting Project from Git sss";
-                 git branch: "master",
+                 git branch: "mohamed-ali-nouri",
                      url: "https://github.com/MedAliNouri/devops.git";
              }
          }
