@@ -17,6 +17,14 @@
     <properties>
         <java.version>11</java.version>
     </properties>
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>nexus-release</id>
+            <name>nexus-release</name>
+            <url>http://192.168.15.128:9003/repository/nexus-release/</url>
+        </repository>
+    </distributionManagement>
      <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
