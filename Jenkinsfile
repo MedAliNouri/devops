@@ -28,7 +28,9 @@
                      }
          stage('deploy') {
              steps {
+               withSonarQubeEnv('sonar') {
                  sh 'mvn clean deploy'
+                 }
                  }
          }
      }
