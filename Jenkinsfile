@@ -26,6 +26,11 @@
                      }
                      }
                      }
+         stage('deploy') {
+             steps {
+                 sh 'mvn clean deploy'
+                 }
+         }
      }
 
      post {
