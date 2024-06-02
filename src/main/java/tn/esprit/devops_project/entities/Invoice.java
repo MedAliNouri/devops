@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 
 @Entity
 @Getter
+@Builder
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor

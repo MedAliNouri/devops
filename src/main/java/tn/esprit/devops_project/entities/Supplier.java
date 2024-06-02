@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
