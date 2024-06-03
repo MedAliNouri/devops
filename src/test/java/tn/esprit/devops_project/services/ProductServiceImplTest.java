@@ -1,49 +1,42 @@
 package tn.esprit.devops_project.services;
 
-import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.MockitoAnnotations;
 import tn.esprit.devops_project.entities.Invoice;
 import tn.esprit.devops_project.entities.Operator;
 import tn.esprit.devops_project.repositories.InvoiceRepository;
-import org.springframework.boot.test.context.SpringBootTest;
-import javax.swing.*;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Optional;
-import lombok.Builder;
 import tn.esprit.devops_project.repositories.OperatorRepository;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.springframework.test.util.AssertionErrors.*;
-@RunWith(SpringRunner.class)
-@SpringBootTest
+import java.util.*;
 
-@ExtendWith(MockitoExtension.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
-
-class ProductServiceImplTest {
-    @Mock
-    private OperatorRepository operatorRepository;
-
-    @Mock
-    private InvoiceRepository invoiceRepository;
+class InvoiceServiceImplTest {
 
     @InjectMocks
-    private InvoiceServiceImpl invoiceService;
+    InvoiceServiceImpl invoiceService;
+    @InjectMocks
+    OperatorServiceImpl operatorService;
+
+    @Mock
+    InvoiceRepository invoiceRepository;
+
+    @Mock
+    OperatorRepository operatorRepository;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date dateCreation;
 
     {
         try {
-            dateCreation = dateFormat.parse("2024-05-05");
+            dateCreation = dateFormat.parse("2023-06-01");
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -53,50 +46,97 @@ class ProductServiceImplTest {
 
     {
         try {
-            dateLastModification = dateFormat.parse("2024-06-06");
+            dateLastModification = dateFormat.parse("2023-06-01");
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
-    public void testAssignOperatorToInvoice() {
-        // Create an operator
+    void assignOperatorToInvoice() {
+        // Arrange
+        Long invoiceId = 1L;
+        Long operatorId = 1L;
+
+        Invoice invoice = Invoice.builder()
+                .idInvoice(invoiceId)
+                .amountDiscount(5)
+                .amountInvoice(2.5f)
+                .dateCreationInvoice(dateCreation)  // Example date string
+                .dateLastModificationInvoice(dateLastModification)  // Example date string
+                .archived(false)
+                .build();
+        Set<Invoice> az = new HashSet<>();
+        az.add(invoice);
         Operator operator = Operator.builder()
-                .idOperateur(1L)
+                .idOperateur(operatorId)
                 .fname("John")
                 .lname("Doe")
                 .password("$2a$10$dIJH36hgVGDqr7FBm")
+                .invoices(az)
                 .build();
+        when(operatorRepository.save(Mockito.any(Operator.class)))
+                       .thenReturn(operator);
+        //Operator op = operatorService.addOperator(operator);
+        when(operatorRepository.save(Mockito.any(Operator.class))).thenReturn(operator);
+        when(invoiceRepository.findById(invoiceId)).thenReturn(Optional.of(invoice));
+        when(operatorRepository.findById(operatorId)).thenReturn(Optional.of(operator));
 
-        // Create an invoice
+
+        // Act
+        invoiceService.assignOperatorToInvoice(operatorId, invoiceId);
+
+        // Assert
+        verify(invoiceRepository, times(1)).findById(invoiceId);
+        verify(operatorRepository, times(1)).findById(operatorId);
+        verify(operatorRepository, times(1)).save(operator); //
+        assert(operator.getInvoices().contains(invoice));
+    }
+
+    @Test
+    void assignOperatorToInvoice_InvoiceNotFound() {
+        // Arrange
+        Long invoiceId = 1L;
+        Long operatorId = 1L;
+
+        when(invoiceRepository.findById(invoiceId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> invoiceService.assignOperatorToInvoice(operatorId, invoiceId));
+
+        verify(invoiceRepository, times(1)).findById(invoiceId);
+        verify(operatorRepository, never()).findById(anyLong());
+        verify(operatorRepository, never()).save(any(Operator.class));
+    }
+
+    @Test
+    void assignOperatorToInvoice_OperatorNotFound() {
+        // Arrange
+        Long invoiceId = 1L;
+        Long operatorId = 1L;
+
         Invoice invoice = Invoice.builder()
-                .idInvoice(1L)
+                .idInvoice(invoiceId)
                 .amountDiscount(5)
                 .amountInvoice(2.5f)
-                .dateCreationInvoice(dateCreation)
-                .dateLastModificationInvoice(dateLastModification)
+                .dateCreationInvoice(dateCreation)  // Example date string
+                .dateLastModificationInvoice(dateLastModification)  // Example date string
                 .archived(false)
                 .build();
 
-        // Mock the behavior of repository methods
-        Mockito.when(operatorRepository.findById(1L)).thenReturn(Optional.of(operator));
-        Mockito.when(invoiceRepository.findById(1L)).thenReturn(Optional.of(invoice));
+        when(invoiceRepository.findById(invoiceId)).thenReturn(Optional.of(invoice));
+        when(operatorRepository.findById(operatorId)).thenReturn(Optional.empty());
 
-        // Call the method under test
-        invoiceService.assignOperatorToInvoice(1L, 1L);
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> invoiceService.assignOperatorToInvoice(operatorId, invoiceId));
 
-        // Verify the behavior
-        Mockito.verify(operatorRepository).findById(1L);
-        Mockito.verify(invoiceRepository).findById(1L);
-        Mockito.verify(invoiceRepository).save(invoice);
-
-        // Additional assertions
-        //assertNotNull(invoice.getOperator());
-        //assertEquals(operator.getId(), invoice.getOperator().getId());
+        verify(invoiceRepository, times(1)).findById(invoiceId);
+        verify(operatorRepository, times(1)).findById(operatorId);
+        verify(operatorRepository, never()).save(any(Operator.class));
     }
-
-
-
-
 }
