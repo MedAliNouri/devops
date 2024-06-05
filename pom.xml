@@ -63,8 +63,16 @@
                    
                 </configuration>
             </plugin>
-            <!-- Add the SonarQube plugin configuration -->
         </plugins>
     </build>
-
+ <distributionManagement>
+    <snapshotRepository>
+          <id>nexus.snapshot</id>
+          <url>http://localhost:8081/repository/nexus-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+          <id>nexus.release</id>
+          <url>http://localhost:8081/repository/nexus-releases/</url>
+    </repository>
+</distributionManagement>
 </project>
