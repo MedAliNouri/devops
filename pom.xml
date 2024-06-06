@@ -20,9 +20,9 @@
     <distributionManagement>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>nexus-release11</id>
-            <name>nexus-release11</name>
-            <url>http://localhost:9003/repository/nexus-release11/</url>
+            <id>nexus-release</id>
+            <name>nexus-release</name>
+            <url>http://localhost:9003/repository/nexus-release/</url>
         </repository>
     </distributionManagement>
      <dependencies>
