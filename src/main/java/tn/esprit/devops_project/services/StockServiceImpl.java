@@ -30,5 +30,11 @@ public class StockServiceImpl implements IStockService {
     }
 
 
+    public Stock updateStock(Stock stock) {
+        return  stockRepository.save(stock);
+    }
 
+    public void deleteStock(Long stockId) {
+        stockRepository.deleteById(stockId);
+    }
 }
