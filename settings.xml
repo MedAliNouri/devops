@@ -10,5 +10,10 @@
             <username>admin</username>
             <password>12345</password>
         </server>
+         <server>
+            <id>deploymentRepo</id>
+            <username>admin</username>
+            <password>12345</password>
+        </server>
     </servers>
 </settings>
