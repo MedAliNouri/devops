@@ -89,16 +89,12 @@
             </plugin>
         </plugins>
     </build>
+<distributionManagement>
+           <repository>
+               <id>deploymentRepo</id>
+               <url>http://192.168.10.144:8081/repository/maven-releases/</url>
+            </repository>
+</distributionManagement>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus.snapshot</id>
-            <url>http://192.168.10.144:8081/repository/nexus-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>nexus.release</id>
-            <url>http://192.168.10.144:8081/repository/nexus-releases/</url>
-        </repository>
-    </distributionManagement>
 
 </project>
