@@ -6,6 +6,8 @@ ARG ARTIFACT_NAME=DevOps_Project-1.0.jar
 RUN apt-get update &&  apt-get install -y wget && \
     wget ${ARTIFACT_URL} -O ${ARTIFACT_NAME}
 
+
+
 EXPOSE 8082
 
 COPY src/main/resources/application.properties config/application.properties
