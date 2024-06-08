@@ -1,14 +1,11 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
+FROM node:22.2-alpine
 
-# Set the working directory inside the container
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy the JAR file from the host to the container
-COPY ./target/*.jar app.jar
+COPY . /usr/src/app
 
-# Expose the port that your Spring Boot app runs on
-EXPOSE 8080
+RUN npm install -g @angular/cli
 
-# Set the entry point to run the JAR file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+RUN npm install
+
+CMD ["ng", "serve", "--host", "0.0.0.0"]
