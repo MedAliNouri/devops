@@ -15,14 +15,12 @@
 
          stage("Build") {
              steps {
-                 sh "mvn -version"
                  sh "mvn clean package -DskipTests"
              }
          }
-          stage("Build") {
+          stage("Test") {
               steps {
-                  sh "mvn -version"
-                  sh "mvn clean package -DskipTests"
+                  sh "mvn test"
               }
           }
          stage('mvn sonarqube') {
