@@ -24,8 +24,8 @@
                  withSonarQubeEnv('sonar') {
                      sh 'mvn sonar:sonar'
                      }
-                     }
-                     }
+                 }
+             }
          stage('deploy') {
              steps {
                withSonarQubeEnv('sonar') {
@@ -33,11 +33,31 @@
                }
              }
          }
-          stage('Fetch Artifact') {
+         stage('Build Docker Image') {
              steps {
-                 sh "wget http://192.168.15.128:9003/repository/nexus-release/tn/esprit/DevOps_Project/1.0/DevOps_Project-1.0.jar"
+                 script {
+                     sh "docker build -t medalinouri/devops_project:latest ."
+                 }
              }
-          }
+         }
+         stage('Verify Docker Image') {
+             steps {
+                 script {
+                     sh "docker images" // Verify that the image exists
+                 }
+             }
+         }
+
+         stage('Push Docker Image to Docker Hub') {
+             steps {
+                  script {
+                      withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'dockerhubpwd')]) {
+                        sh "docker login -U medalinouri --password-stdin ${dockerhubpwd}"
+                         sh "docker push medalinouri/devops_project:latest"
+                         }
+                 }
+             }
+         }
      }
 
      post {
