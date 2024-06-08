@@ -11,7 +11,7 @@
             <password>12345</password>
         </server>
          <server>
-            <id>deploymentRepo</id>
+            <id>nexus.release</id>
             <username>admin</username>
             <password>12345</password>
         </server>
