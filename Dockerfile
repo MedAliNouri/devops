@@ -12,6 +12,6 @@ RUN apt-get update && apt-get install -y wget && \
 # Exposer le port
 EXPOSE 8082
 
-COPY devops/src/main/resources/application.properties config/application.properties
+COPY src/main/resources/application.properties config/application.properties
 # Définir la commande d'exécution de l'application
 ENTRYPOINT ["java", "-jar", "DevOps_Project-1.0.jar","-Dspring.config.location=config"]
