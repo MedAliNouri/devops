@@ -52,7 +52,7 @@
              steps {
                   script {
                       withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'dockerhubpwd')]) {
-                        sh "docker login -u medalinouri --password-stdin ${dockerhubpwd}"
+                        sh "docker login -u medalinouri -p ${dockerhubpwd}"
                          sh "docker push medalinouri/devops_project:latest"
                          }
                  }
