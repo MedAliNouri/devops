@@ -1,8 +1,8 @@
 
 FROM openjdk:11-jdk-slim
 
-ARG ARTIFACT_URL=http://192.168.171.129:9003/repository/repository/nexus-release/tn/esprit/DevOps_Project/1.1/DevOps_Project-1.1.jar
-ARG ARTIFACT_NAME=DevOps_Project-1.0.jar
+ARG ARTIFACT_URL=http://192.168.171.129:9003/repository/nexus-release/tn/esprit/DevOps_Project/1.1/DevOps_Project-1.1.jar
+ARG ARTIFACT_NAME=DevOps_Project-1.1.jar
 
 RUN apt-get update &&  apt-get install -y wget && \
     wget ${ARTIFACT_URL} -O ${ARTIFACT_NAME}
